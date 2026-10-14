@@ -1,0 +1,55 @@
+<html>
+    <head>
+        <title>Calorias</title>
+        <link rel="stylesheet" href="estilo.css">
+        <link rel="manifest" href="manifest.json">
+    </head>
+    <body>
+        <h1>CALORIAS</h1>
+       
+        <div class="contenedor-imagen">
+        <img src="fondo.png" class="imagen-animada">
+        </div>
+
+        <div class="contenedor-boton">
+            <button class="boton" id="boton">+</button>
+        </div> 
+
+        <div class="panel-calorias">
+            <span class="label">Calorías:</span>
+            <span class="valor">0 / 300</span>
+        </div>
+    </body>
+    <script>
+        btn=document.getElementById("boton");
+        btn.addEventListener("click",()=>{
+            //alert("si");
+           
+            // 1. Verificamos que el navegador soporte la API
+            if (!('speechSynthesis' in window)) {
+                alert("Tu navegador no soporta la conversión de texto a voz.");
+                return;
+            }
+
+            const texto = "funciona correctamente";
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(texto);
+            // Configuración opcional
+            utterance.lang = 'es-ES'; // Idioma (español)
+            utterance.rate = 1.0;   // Velocidad (1.0 es normal)
+            const voces = window.speechSynthesis.getVoices();
+            const mujer = ['Sabina', 'Helena', 'Paulina', 'Laura', 'Monica', 'Google español'];
+            utterance.voice = voces.find(v => v.lang.startsWith('es') && mujer.some(m => v.name.includes(m))) 
+                   || voces.find(v => v.lang.startsWith('es'));
+            utterance.pitch = 1.0;  // Tono de voz
+            // 4. Reproducimos el audio
+            window.speechSynthesis.speak(utterance);
+        });
+
+        if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js')
+            .then(() => console.log("Service Worker Registrado"))
+            .catch(err => console.log("Error al registrar SW", err));
+        }
+    </script>
+</html>
