@@ -13,43 +13,84 @@
 
         <div class="contenedor-boton">
             <button class="boton" id="boton">+</button>
+            <div class="grupo-input-kcal oculto" id="numero">
+            <input type="number" class="input-numero" placeholder="0" id="valor">
+            <button class="boton-kcal" id="boton2">Kcal</button>
+            </div>
         </div> 
 
         <div class="panel-calorias">
             <span class="label">Calorías:</span>
-            <span class="valor">0 / 300</span>
+            <span class="valor" id="label">0 / 300</span>
         </div>
     </body>
     <script>
-        btn=document.getElementById("boton");
+        total=3000;
+        cal=0;
+        saveloadcalorias(0);
+        btn=document.getElementById("boton");     
+        btn2=document.getElementById("boton2");         
+        numero=document.getElementById("numero");
+        valor=document.getElementById("valor"); 
+        label=document.getElementById("label"); 
         btn.addEventListener("click",()=>{
-            //alert("si");
            
-            // 1. Verificamos que el navegador soporte la API
-            if (!('speechSynthesis' in window)) {
-                alert("Tu navegador no soporta la conversión de texto a voz.");
-                return;
+            if (numero.classList.contains("oculto")){ 
+                numero.classList.remove("oculto");
+                btn.classList.add("oculto");
+                valor.value="";
+                hablar("Registrar Calorías")
             }
+        });
+        btn2.addEventListener("click",()=>{
+           if(valor.value==0){
+                hablar("registra una cantidad válida");
+           }else{
+            if (!numero.classList.contains("oculto")){ 
+                numero.classList.add("oculto");
+                btn.classList.remove("oculto");
+                hablar(valor.value+" Calorías Registradas");
+                cal+=Number(valor.value);
+                label.textContent=cal+" / "+total;
+                 saveloadcalorias(1);
+            }}
+        });
 
-            const texto = "amor dile a keyla para q cosinen temprano";
+        function hablar(t){
+            if (!('speechSynthesis' in window)) {alert("Tu navegador no soporta texto a voz.");return;}
+
+            const texto =t;
             window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(texto);
             // Configuración opcional
             utterance.lang = 'es-ES'; // Idioma (español)
-            utterance.rate = 1.0;   // Velocidad (1.0 es normal)
+            utterance.rate = 1.3;   // Velocidad (1.0 es normal)
             const voces = window.speechSynthesis.getVoices();
-            const mujer = ['Sabina', 'Helena', 'Paulina', 'Laura', 'Monica', 'Google español'];
+            const mujer = [ 'Helena','Sabina', 'Paulina', 'Laura', 'Monica', 'Google español'];
             utterance.voice = voces.find(v => v.lang.startsWith('es') && mujer.some(m => v.name.includes(m))) 
                    || voces.find(v => v.lang.startsWith('es'));
             utterance.pitch = 1.0;  // Tono de voz
             // 4. Reproducimos el audio
             window.speechSynthesis.speak(utterance);
-        });
-
+        }
         if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('./sw.js')
             .then(() => console.log("Service Worker Registrado"))
             .catch(err => console.log("Error al registrar SW", err));
+        }
+
+        function saveloadcalorias(modo) {
+            if (modo === 0) {
+                // Si el parámetro es 0: Busca en localStorage
+                const guardado = localStorage.getItem("cal");
+                if (guardado !== null) {
+                    cal = parseFloat(guardado) || 0; // Lo convierte a número por seguridad
+                    label.textContent=cal+" / "+total;
+                }
+            } else if (modo === 1) {
+                // Si el parámetro es 1: Guarda la variable actual en localStorage
+                localStorage.setItem("cal", cal);
+            }
         }
     </script>
 </html>

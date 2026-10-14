@@ -5,6 +5,9 @@ body{
     box-sizing: border-box;
     background: #e3fff1;                
 }
+.oculto{
+    display: none !important;;
+}
 .contenedor-boton{
     position: absolute;
     top: 0px;
@@ -31,6 +34,71 @@ body{
 
 
 
+/* Contenedor principal que envuelve al input y al botón */
+.grupo-input-kcal {
+    padding: 0px;
+  display: flex;
+  align-items: center;
+  background: rgb(255, 255, 255); /* Fondo semitransparente estilo cristal */
+  border: 2px solid #00ff89;         /* Borde principal brillante */
+  border-radius: 40px;
+  width: 320px;
+  box-sizing: border-box;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+  transition: all 0.25s ease;
+}
+
+/* Efecto cuando haces clic o escribes dentro del grupo */
+.grupo-input-kcal:focus-within {
+  border-color: #09bf00;
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3), 
+              0 0 15px rgba(0, 255, 137, 0.3); /* Brillo neón suave */
+}
+
+/* El input de número SIN FONDO y sin bordes propios */
+.input-numero {
+        padding-left: 30px;
+  flex: 1;
+  background: transparent; /* Sin color de fondo */
+  border: none;            /* Sin bordes (los maneja el div contenedor) */
+  outline: none;
+  color: #00ff89;          /* Color del número al escribir */
+  width: 100%;
+}.input-numero::placeholder {color: rgba(0, 255, 137, 0.4);}
+
+/* Quitar las flechitas arriba/abajo típicas de los input number en algunos navegadores 
+.input-numero::-webkit-inner-spin-button,
+.input-numero::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}*/
+
+.input-numero,.boton-kcal {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+/* El botón "Kcal" integrado a la derecha */
+.boton-kcal {
+  padding: 14px 22px;
+  border-radius: 30px;
+      border-top-left-radius: 0px;
+  border: none;
+  background: linear-gradient(135deg, #00ff89, #09bf00);
+  color: #014f00;  
+  cursor: pointer;
+  box-shadow: inset 0 -3px 0 rgba(1, 79, 0, 0.4);
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.boton-kcal:hover {
+  opacity: 0.95;
+  transform: scale(1.03);
+}
+
+.boton-kcal:active {
+  transform: scale(0.97);
+}
 
 
 .panel-calorias {
