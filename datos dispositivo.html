@@ -1,0 +1,156 @@
+<html>
+    <head>
+        <title>Calorias</title>
+        <link rel="stylesheet" href="estilo.css">
+        <link rel="manifest" href="manifest.json">
+    </head>
+    <body>
+        <h1>CALORIAS</h1>
+       
+        <div class="contenedor-imagen">
+        <img src="fondo.png" class="imagen-animada">
+        </div>
+
+        <div class="contenedor-boton">
+            <button class="boton" id="boton">+</button>
+            <div class="grupo-input-kcal oculto" id="numero">
+            <input type="number" class="input-numero" placeholder="0" id="valor">
+            <button class="boton-kcal" id="boton2">Kcal</button>
+            </div>
+        </div> 
+
+        <div class="panel-calorias">
+            <span class="label">Calorías:</span>
+            <span class="valor" id="label">0 / 300</span>
+        </div>
+    </body>
+    <script>
+        total=3000;
+        cal=0;
+        saveloadcalorias(0);
+        btn=document.getElementById("boton");     
+        btn2=document.getElementById("boton2");         
+        numero=document.getElementById("numero");
+        valor=document.getElementById("valor"); 
+        label=document.getElementById("label"); 
+        btn.addEventListener("click",()=>{
+           
+            if (numero.classList.contains("oculto")){ 
+                numero.classList.remove("oculto");
+                btn.classList.add("oculto");
+                valor.value="";
+                hablar("Registrar Calorías")
+            }
+        });
+        btn2.addEventListener("click",()=>{
+           if(valor.value==0){
+                hablar("registra una cantidad válida");
+           }else{
+            if (!numero.classList.contains("oculto")){ 
+                numero.classList.add("oculto");
+                btn.classList.remove("oculto");
+                hablar(valor.value+" Calorías Registradas "+ obtenerInfoDispositivoCompleta());
+                cal+=Number(valor.value);
+                label.textContent=cal+" / "+total;
+                 saveloadcalorias(1);
+            }}
+        });
+
+        function hablar(t){
+            if (!('speechSynthesis' in window)) {alert("Tu navegador no soporta texto a voz.");return;}
+
+            const texto =t;
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(texto);
+            // Configuración opcional
+            utterance.lang = 'es-ES'; // Idioma (español)
+            utterance.rate = 1.3;   // Velocidad (1.0 es normal)
+            const voces = window.speechSynthesis.getVoices();
+            const mujer = [ 'Helena','Sabina', 'Paulina', 'Laura', 'Monica', 'Google español'];
+            utterance.voice = voces.find(v => v.lang.startsWith('es') && mujer.some(m => v.name.includes(m))) 
+                   || voces.find(v => v.lang.startsWith('es'));
+            utterance.pitch = 1.0;  // Tono de voz
+            // 4. Reproducimos el audio
+            window.speechSynthesis.speak(utterance);
+        }
+        if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js')
+            .then(() => console.log("Service Worker Registrado"))
+            .catch(err => console.log("Error al registrar SW", err));
+        }
+
+        function saveloadcalorias(modo) {
+            if (modo === 0) {
+                // Si el parámetro es 0: Busca en localStorage
+                const guardado = localStorage.getItem("cal");
+                if (guardado !== null) {
+                    cal = parseFloat(guardado) || 0; // Lo convierte a número por seguridad
+                    label.textContent=cal+" / "+total;
+                }
+            } else if (modo === 1) {
+                // Si el parámetro es 1: Guarda la variable actual en localStorage
+                localStorage.setItem("cal", cal);
+            }
+        }
+              function obtenerInfoDispositivoCompleta() {
+    const ua = navigator.userAgent;
+    let sistemaOperativo = "Desconocido";
+    let navegador = "Desconocido";
+    let dispositivo = "Computadora de Escritorio";
+
+    // 1. Detectar Sistema Operativo
+    if (/win/i.test(ua)) {
+        sistemaOperativo = "Windows";
+        dispositivo = "PC con Windows";
+    } else if (/mac/i.test(ua) && !/iphone|ipad|ipod/i.test(ua)) {
+        sistemaOperativo = "macOS";
+        dispositivo = "Mac";
+    } else if (/android/i.test(ua)) {
+        sistemaOperativo = "Android";
+        dispositivo = "Dispositivo Android";
+    } else if (/iphone|ipad|ipod/i.test(ua)) {
+        sistemaOperativo = "iOS";
+        dispositivo = /ipad/i.test(ua) ? "iPad" : "iPhone";
+    } else if (/linux/i.test(ua)) {
+        sistemaOperativo = "Linux";
+        dispositivo = "PC con Linux";
+    }
+
+    // 2. Detectar Navegador
+    if (/edg/i.test(ua)) {
+        navegador = "Microsoft Edge";
+    } else if (/chrome|crios/i.test(ua)) {
+        navegador = "Google Chrome";
+    } else if (/firefox|fxios/i.test(ua)) {
+        navegador = "Firefox";
+    } else if (/safari/i.test(ua) && !/chrome/i.test(ua)) {
+        navegador = "Safari";
+    } else {
+        navegador = "Navegador web";
+    }
+
+    // 3. Obtener Memoria RAM aproximada
+    // Nota: Por privacidad, algunos navegadores o dispositivos no devuelven este dato exacto (retorna undefined)
+    const ram = navigator.deviceMemory ? `${navigator.deviceMemory} GB aprox.` : "No disponible por privacidad";
+
+    // 4. Detectar Tipo de Conexión (Wi-Fi, 4G, etc.)
+    const conexion = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    let tipoConexion = "Desconocida";
+    if (conexion) {
+        // effectiveType suele devolver '4g', '3g', etc. (en conexiones rápidas como Wi-Fi o fibra en PC suele reportar 4g o similar)
+        tipoConexion = conexion.effectiveType ? conexion.effectiveType.toUpperCase() : "Desconocida";
+        if (conexion.type) {
+            tipoConexion += ` (${conexion.type})`; // A veces arroja 'wifi', 'cellular', etc.
+        }
+    }
+
+    // 5. Obtener Zona Horaria
+    const zonaHoraria = Intl.DateTimeFormat().resolvedOptions().timeZone || "Desconocida";
+
+    // 6. Construir el texto final detallado
+    return `Hola, estás usando un dispositivo ${dispositivo} con el navegador ${navegador} y sistema operativo ${sistemaOperativo}. ` +
+           `Tu equipo cuenta con una RAM de ${ram}, estás conectado mediante red tipo ${tipoConexion} ` +
+           `y te encuentras en la zona horaria ${zonaHoraria}.`;
+}
+    </script>
+</html>

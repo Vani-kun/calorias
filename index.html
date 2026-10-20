@@ -12,10 +12,21 @@
         </div>
 
         <div class="contenedor-boton">
-            <button class="boton" id="boton">+</button>
+            <button class="boton " id="boton">+</button>
+
             <div class="grupo-input-kcal oculto" id="numero">
             <input type="number" class="input-numero" placeholder="0" id="valor">
             <button class="boton-kcal" id="boton2">Kcal</button>
+            </div>
+
+            <div class="comidas oculto" id="comidas">
+                <img src="1.png">
+                <img src="2.png">
+                <img src="3.png">
+                <img src="4.png">
+                <img src="5.png">
+                <img src="5.png">
+                <img src="5.png">
             </div>
         </div> 
 
@@ -25,8 +36,28 @@
         </div>
     </body>
     <script>
-        total=3000;
-        cal=0;
+        cal=0;total=3000;
+        c=["Arepa con Huevo","Arepa con Queso","Arepa con Atun","Arros con pollo","nada","nada","nada"];
+        vl=[350,300,380,550,0,0,0];
+        comidas=document.getElementById("comidas");  
+        //comidas.children.length
+        [...comidas.children].forEach((comi,i)=>{
+            comi.addEventListener("click",()=>{
+                //alert(c[i]);
+                if(vl[i]==0){
+                    comidas.classList.add("oculto");
+                    numero.classList.remove("oculto");valor.value="";
+                }else{
+                    comidas.classList.add("oculto");
+                    btn.classList.remove("oculto");
+                    hablar(vl[i]+" Calorías Registradas");
+                    cal+=Number(vl[i]);
+                    label.textContent=cal+" / "+total;
+                    saveloadcalorias(1);
+                }
+                hablar(c[i]+" "+vl[i]+"calorias");
+            });
+        })
         saveloadcalorias(0);
         btn=document.getElementById("boton");     
         btn2=document.getElementById("boton2");         
@@ -34,13 +65,15 @@
         valor=document.getElementById("valor"); 
         label=document.getElementById("label"); 
         btn.addEventListener("click",()=>{
-           
-            if (numero.classList.contains("oculto")){ 
+                btn.classList.add("oculto");
+                comidas.classList.remove("oculto");
+                hablar("Registrar Calorías")           
+            /*if (numero.classList.contains("oculto")){ 
                 numero.classList.remove("oculto");
                 btn.classList.add("oculto");
                 valor.value="";
                 hablar("Registrar Calorías")
-            }
+            }*/
         });
         btn2.addEventListener("click",()=>{
            if(valor.value==0){
@@ -49,7 +82,7 @@
             if (!numero.classList.contains("oculto")){ 
                 numero.classList.add("oculto");
                 btn.classList.remove("oculto");
-                hablar(valor.value+" Calorías Registradas "+ obtenerInfoDispositivoCompleta());
+                hablar(valor.value+" Calorías Registradas ");//+ obtenerInfoDispositivoCompleta());
                 cal+=Number(valor.value);
                 label.textContent=cal+" / "+total;
                  saveloadcalorias(1);

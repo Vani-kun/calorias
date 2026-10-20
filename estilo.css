@@ -184,3 +184,58 @@ h1 {
   box-sizing: border-box;
   padding: 0 15px;
 }
+
+/*cuadro de comidas*/
+.comidas{
+    width: 80vw;
+    height: 80vw;
+    background: white;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+
+  gap: 10px;/* Separación */
+  justify-items: center; /* Centra horizontalmente */
+  align-items: center;   /* Centra verticalmente */
+}
+/* Estilo y efectos directos para las imágenes */
+.comidas img{
+  width: 100%;
+  border-radius: 20%;
+  cursor: pointer;
+  border: 2px solid transparent; /* Borde invisible por defecto */
+  transition: all 0.25s ease;    /* Transición suave para el hover */
+}
+/* EFECTO HOVER: Pone borde y un fondo/filtro verde al pasar el ratón */
+.comidas img:hover {
+  border-color: #00ff89;             /* Borde verde neón */
+  transform: translateY(-3px);       /* Eleva sutilmente la imagen */
+  box-shadow: 0 10px 50px rgba(0, 255, 137, 0.3); /* Resplandor verde */
+      background: linear-gradient(135deg, #00ff89, #09bf00);
+}
+
+.comidas img::after {
+  /* ¡LA CLAVE! Toma el texto del atributo data-texto del HTML */
+  content: "calorias";
+  
+  /* Posicionamiento absoluto para cubrir la imagen */
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  
+  /* Estilo del fondo (semitransparente) y texto */
+  background-color: rgba(0, 79, 0, 0.8); /* Tu verde oscuro */
+  color: #00ff89;                      /* Tu verde neón */
+  font-weight: bold;
+  font-size: 1.2rem;
+  
+  /* Centrado perfecto del texto */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* Oculto por defecto */
+  opacity: 1;
+  transition: opacity 0.3s ease; /* Transición suave */
+  border-radius: 12px; /* Mismo radio que la imagen */
+}
