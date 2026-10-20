@@ -5,7 +5,7 @@
         <link rel="manifest" href="manifest.json">
     </head>
     <body>
-        <h1>CALORIAS</h1>
+        <h1>CALORIAS <button id="fin">x</button></h1>
        
         <div class="contenedor-imagen">
         <img src="fondo.png" class="imagen-animada">
@@ -64,6 +64,7 @@
         numero=document.getElementById("numero");
         valor=document.getElementById("valor"); 
         label=document.getElementById("label"); 
+        fin=document.getElementById("fin"); 
         btn.addEventListener("click",()=>{
                 btn.classList.add("oculto");
                 comidas.classList.remove("oculto");
@@ -88,7 +89,12 @@
                  saveloadcalorias(1);
             }}
         });
-
+        fin.addEventListener("click",()=>{
+            hablar("Dia finalizado")
+                saveloadcalorias(2);
+                cal=0;
+                label.textContent=cal+" / "+total;
+        });
         function hablar(t){
             if (!('speechSynthesis' in window)) {alert("Tu navegador no soporta texto a voz.");return;}
 
@@ -123,9 +129,14 @@
             } else if (modo === 1) {
                 // Si el parámetro es 1: Guarda la variable actual en localStorage
                 localStorage.setItem("cal", cal);
+            } else if (modo === 2) {
+                // Si el parámetro es 1: Guarda la variable actual en localStorage
+                localStorage.setItem("cal", 0);
             }
         }
-              function obtenerInfoDispositivoCompleta() {
+
+
+        function obtenerInfoDispositivoCompleta() {
     const ua = navigator.userAgent;
     let sistemaOperativo = "Desconocido";
     let navegador = "Desconocido";

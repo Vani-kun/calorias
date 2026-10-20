@@ -163,7 +163,7 @@ position: absolute;
 
 
 h1 {
-  font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive, sans-serif;
+  font-family: 'verdana','arial';
   text-align: center;
   color: #ffffff;
   
@@ -172,7 +172,7 @@ h1 {
                15px 15px 15px rgba(0, 0, 0, 0.4);
                
   /* Usamos clamp() para que el tamaño se adapte automáticamente al ancho de la pantalla (mínimo 40px, ideal 8vw, máximo 80px) */
-  font-size: 100px;
+  font-size: 80px;
   font-weight: 900;
   
   margin: 0;
@@ -182,7 +182,10 @@ h1 {
   width: 100%;
   z-index: 1;
   box-sizing: border-box;
-  padding: 0 15px;
+  padding: 20px;
+
+    width: 80%;
+    background: linear-gradient(135deg, #00ff89, #09bf00);
 }
 
 /*cuadro de comidas*/
@@ -238,4 +241,24 @@ h1 {
   opacity: 1;
   transition: opacity 0.3s ease; /* Transición suave */
   border-radius: 12px; /* Mismo radio que la imagen */
+}
+
+
+#fin {
+  display:inline-block;
+  background-color: rgb(119, 13, 13); /* Un rojo moderno y llamativo */
+  color: white;              /* Color blanco para la "X" */
+  border: none;
+  border-radius: 50%;        /* Hace que el botón sea perfectamente redondo (puedes cambiarlo a 8px si lo quieres con esquinas redondeadas) */
+  font-size: 80px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0px 20px;
+  transition: background-color 0.5s ease, transform 0.2s ease;
+}
+
+/* Efecto al pasar el ratón por encima (hover) */
+#fin:hover {
+  background-color:  rgb(255, 59, 48);/* Un tono de rojo más oscuro */
+  transform: scale(1.05);    /* Se agranda ligeramente de forma suave */
 }
